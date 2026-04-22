@@ -16,6 +16,14 @@ The workflow also includes a trustworthiness audit covering:
 - local explanation stability
 - subgroup robustness
 
+## Dataset
+
+The project uses the Vehicle Energy Dataset (VED). The notebooks were developed around the Kaggle-hosted dataset:
+
+<https://www.kaggle.com/datasets/galievilyas/ved-dataset/data>
+
+For full end-to-end reproduction, attach this dataset in Kaggle or provide equivalent local paths in the notebook configuration cells.
+
 ## Main Results
 
 On the shipped baseline test split:
@@ -45,6 +53,11 @@ notebooks/
     final-telematics-lime.ipynb
     output.zip           Compact baseline artifact used by final notebooks
 
+regression_model/
+  ved-energy-regression.ipynb
+  models/
+  outputs/
+
 src/
   anomaly/               Residual thresholding and anomaly table generation
   audit/                 Calibration, leakage, stability, subgroup checks
@@ -71,6 +84,16 @@ tests/
 3. `notebooks/06_shap_vs_lime.ipynb`
 4. `notebooks/07_trustworthiness_audit.ipynb`
 
+## Local Setup
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+On Unix-like shells, activate the environment with `source .venv/bin/activate`.
+
 ## Final Deliverables
 
 - [docs/blogpost_draft.md](docs/blogpost_draft.md)
@@ -82,3 +105,20 @@ tests/
 ## Interpretation Note
 
 This is a decision-support workflow, not a direct mechanical diagnostic tool. A flagged trip means "unexpected under the model", not "definitely faulty".
+
+## Limitations
+
+- Residual anomalies are not direct fault labels.
+- LIME explanations are local and can vary with perturbation settings.
+- Trip aggregation loses sequence information.
+- Some exogenous factors, such as weather and route context, may still be missing.
+
+## References
+
+1. Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). "Why Should I Trust You?": Explaining the Predictions of Any Classifier. KDD 2016.
+2. Oh, G. S., LeBlanc, D. J., & Peng, H. (2019). Vehicle Energy Dataset (VED), A Large-scale Dataset for Vehicle Energy Consumption Research. arXiv:1905.02081.
+3. Chen, T., & Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting System. KDD 2016.
+
+## License
+
+MIT
